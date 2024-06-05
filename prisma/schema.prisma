@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user_contacts {
+  id          Int       @id @default(autoincrement())
+  full_name   String    @db.VarChar(255)
+  email       String    @db.VarChar(255)
+  description String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  search      String?
+}
+
+model pgmigrations {
+  id     Int      @id @default(autoincrement())
+  name   String   @db.VarChar(255)
+  run_on DateTime @db.Timestamp(6)
+}
+
+model bookings {
+  id             Int       @id @default(autoincrement())
+  user_id        Int?      
+  booking_number String    @unique
+  drive_type     String    @default("transfer")
+  booking_data   String    @db.VarChar(10000)
+  lookup_number  String    
+  supplier       String    @default("iway")
+  voucher        String
+  status         String    @default("created")
+  lang           String    @default("en")
+  currency       String    @default("usd")
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6) @updatedAt
+  user           users?    @relation(fields: [user_id], references: [id])
+  payment        payments?
+}
+
+model users {
+  id             Int       @id @default(autoincrement())
+  first_name     String     
+  last_name      String  
+  gender         Int    
+  email          String 
+  phone_number   String   
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6) @updatedAt
+  bookings       bookings[]
+  payments       payments[]
+}
+
+model payments {
+  id                 Int       @id @default(autoincrement())
+  booking_number     String    @unique
+  user_id            Int? 
+  service_provider   String
+  lookup_number      String    
+  amount             Float
+  currency           String
+  method             String
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime  @default(now()) @db.Timestamptz(6) @updatedAt
+  booking            bookings? @relation(fields: [booking_number], references: [booking_number])
+  user               users?    @relation(fields: [user_id], references: [id])
+}
