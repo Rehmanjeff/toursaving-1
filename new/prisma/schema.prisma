@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bookings {
+  id             Int       @id @default(autoincrement())
+  user_id        Int?
+  booking_number String    @unique
+  booking_data   String    @db.VarChar(10000)
+  lookup_number  String
+  voucher        String
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime  @default(now()) @db.Timestamptz(6)
+  supplier       String    @default("iway")
+  currency       String    @default("usd")
+  drive_type     String    @default("transfer")
+  lang           String    @default("en")
+  status         String    @default("created")
+  users          users?    @relation(fields: [user_id], references: [id])
+  payments       payments?
+}
+
+model payments {
+  id               Int      @id @default(autoincrement())
+  booking_number   String   @unique
+  user_id          Int?
+  service_provider String
+  lookup_number    String
+  amount           Float
+  currency         String
+  method           String
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime @default(now()) @db.Timestamptz(6)
+  bookings         bookings @relation(fields: [booking_number], references: [booking_number])
+  users            users?   @relation(fields: [user_id], references: [id])
+}
+
+model pgmigrations {
+  id     Int      @id @default(autoincrement())
+  name   String   @db.VarChar(255)
+  run_on DateTime @db.Timestamp(6)
+}
+
+model user_contacts {
+  id          Int       @id @default(autoincrement())
+  full_name   String    @db.VarChar(255)
+  email       String    @db.VarChar(255)
+  description String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  search      String?
+}
+
+model users {
+  id           Int        @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  gender       Int
+  email        String     @unique
+  password     String
+  phone_number String
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime   @default(now()) @db.Timestamptz(6)
+  bookings     bookings[]
+  payments     payments[]
+}
