@@ -1,4 +1,3 @@
-import { UserType } from '@/types/user'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import { SignJWT, jwtVerify } from 'jose'

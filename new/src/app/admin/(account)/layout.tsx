@@ -31,9 +31,8 @@ import { RootState } from '@/lib/redux/store'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { ADMIN_LOGIN } from '@/app/admin/page-routes'
-import { useAppStore } from '@/lib/redux/hooks'
-import { clearUser } from "@/lib/redux/features/user/userSlice"
 import Link from 'next/link'
+import useSignOut from '@/_utils/signout'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 
@@ -41,8 +40,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
    const user = useSelector((state: RootState) => state.user)
    const authAdminToken = localStorage.getItem(process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY as string) || null
    const router = useRouter()
-   const store = useAppStore()
-   
+   const signOut = useSignOut()
+
    useEffect(() => {
       if (!authAdminToken || authAdminToken == '') {
          router.push(ADMIN_LOGIN)
@@ -58,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         current: false,
         children: [
           { name: 'All Bookings', href: '/admin/bookings/all' },
-          { name: 'Add Manual Booking', href: '#' }
+          { name: 'Add Manual Booking', href: '/admin/bookings/add' }
         ],
       },
       { name: 'Manage Users', icon: UsersIcon, href: '#', current: false },
@@ -94,15 +93,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       } else if (id == 'profile') {
          
       }
-   }
-
-   const signOut = () => {
-
-      store.dispatch(clearUser())
-
-      localStorage.removeItem(process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY as string)
-      localStorage.removeItem(process.env.NEXT_PUBLIC_AUTH_USER_KEY as string)
-      router.push(ADMIN_LOGIN)
    }
     
    return (

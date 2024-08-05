@@ -11,6 +11,7 @@ model bookings {
   id             Int       @id @default(autoincrement())
   user_id        Int?
   booking_number String    @unique
+  total          Decimal   @db.Decimal(10,2) @default(0.00)
   booking_data   String    @db.VarChar(10000)
   lookup_number  String
   voucher        String

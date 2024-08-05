@@ -34,5 +34,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/admin/bookings/all',
+  matcher: ['/api/admin/bookings/all', '/api/admin/bookings/:number', '/api/admin/users/all']
 }

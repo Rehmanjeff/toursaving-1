@@ -5,6 +5,8 @@ import { BookingSummaryType } from '@/types/booking'
 import Admin from '@/app/admin/_composables/admin'
 import { ResponseType } from "@/types/index"
 import useSignOut from '@/_utils/signout'
+import Link from 'next/link'
+import useFileDownload from "@/hooks/useFileDownload"
 
 export default function AllBookings() {
 
@@ -12,6 +14,13 @@ export default function AllBookings() {
    const [error, setError] = useState<boolean>(false)
    const [bookings, setBookings] = useState<BookingSummaryType[]>()
    const signOut = useSignOut()
+   const { downloadLink } = useFileDownload()
+
+   const handleDownloadClick = (file: string) => {
+      downloadLink({
+         filePath: file,
+      }).handleDownload()
+   }
 
    useEffect(() => {
       
@@ -42,12 +51,9 @@ export default function AllBookings() {
                </p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-               <button
-                  type="button"
-                  className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-               >
+               <Link href="add" className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                   Add manual booking
-               </button>
+               </Link>
             </div>
          </div>
          {error && (
@@ -90,15 +96,14 @@ export default function AllBookings() {
                               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                  {booking.number}
                               </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.user?.firstName}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.user?.firstName} {booking.user?.lastName}</td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.supplier}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.total}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.total} {booking.currency}</td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.dateTime}</td>
                               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.status}</td>
-                              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                 <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                                 Edit<span className="sr-only">, {booking.number}</span>
-                                 </a>
+                              <td className="relative flex gap-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                 <Link href={booking.number} className="text-indigo-600 hover:text-indigo-900">Details</Link>
+                                 <button onClick={() => handleDownloadClick(`/pdf/${booking.voucher}`)} className="text-indigo-600 hover:text-indigo-900">Voucher</button>
                               </td>
                            </tr>
                            ))}
