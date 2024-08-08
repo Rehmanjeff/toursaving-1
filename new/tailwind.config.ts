@@ -21,6 +21,9 @@ const config: Config = {
          'semi-bold': ['Figtree-SemiBold'],
          'extra-bold': ['Figtree-ExtraBold'],
       },
+      colors: {
+         'theme-red': '#dc3545',
+      }
     },
   },
   plugins: [

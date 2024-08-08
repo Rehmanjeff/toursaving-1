@@ -1,3 +1,6 @@
+import { BookingPrice, CarSummary, DriveType, PassengersDetail } from "@/types/booking"
+import { UserType } from "@/types/user"
+import { Location } from "@/types/location"
 
 const baseUrl : string = '/api/admin'
 
@@ -187,6 +190,56 @@ const Admin = () => {
          return {statusCode: 500, data: err}
       }
    }
+   
+   const adminCreateBooking = async (
+      bookingType: DriveType, 
+      bookingHours: number | null, 
+      paymentMode: 'cash' | 'online', 
+      price: BookingPrice,
+      customer: UserType, 
+      isCustomerNew: boolean, 
+      car: CarSummary, 
+      pickup: Location, 
+      dropoff: Location | null, 
+      pickupDateTime: string,
+      passengers: PassengersDetail
+   ) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/bookings/create`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({
+               bookingType,
+               bookingHours,
+               paymentMode,
+               price,
+               customer,
+               isCustomerNew,
+               car,
+               pickup,
+               dropoff,
+               pickupDateTime,
+               passengers
+            })
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
 
    return {
       adminDashboard,
@@ -195,7 +248,8 @@ const Admin = () => {
       adminCancelBooking,
       adminSearchLocation,
       adminAllUsers,
-      adminLogin
+      adminLogin,
+      adminCreateBooking
    }
 }
 

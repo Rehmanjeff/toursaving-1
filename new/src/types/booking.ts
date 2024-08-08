@@ -7,11 +7,35 @@ export type DriveType = 'transfer' | 'chauffer' | 'rental'
 
 export type BookingStatus = 'Created' | 'Unpaid' | 'Completed' | 'Cancelled'
 
+export type Supplier = 'iway'
+
 export interface CarSummary {
    title: string;
+   supplier: Supplier;
    description: string;
    capacity: number;
    image: string;
+   price: number;
+}
+
+export interface BookingExtra {
+   name: string;
+   description: string;
+   price: number;
+}
+
+export interface BookingPrice {
+   subTotal: number;
+   commission: {
+      amount: number;
+      percentage: number;
+   };
+   tax: number;
+   extras: {
+      total: number;
+      list: BookingExtra[]
+   };
+   grandTotal: number;
 }
 
 export interface PassengersDetail {
@@ -43,6 +67,7 @@ export interface BookingType {
    endDateTime: string | null;
    hours: number | null;
    supplier: string;
+   price: BookingPrice;
    status: BookingStatus;
    total:number;
    currency:Currency;

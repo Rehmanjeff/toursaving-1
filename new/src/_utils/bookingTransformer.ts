@@ -1,6 +1,6 @@
 // utils/bookingTransformer.ts
 import { bookings, users } from '@prisma/client'
-import { BookingSummaryType, Currency, BookingType, DriveType, CarSummary, PassengersDetail, BookingStatus } from '@/types/booking'
+import { BookingSummaryType, Currency, BookingType, DriveType, CarSummary, PassengersDetail, BookingStatus, BookingPrice } from '@/types/booking'
 import { format } from 'date-fns'
 import { Location } from '@/types/location'
 import { UserType } from '@/types/user'
@@ -29,17 +29,18 @@ export function transformBooking(booking: bookings & { users?: users }): any {
       return {
          number: booking.booking_number,
          lookupNumber: booking.lookup_number,
-         driveType: bookingData.drive_type as DriveType,
+         driveType: bookingData.bookingType as DriveType,
          car: bookingData.car as CarSummary,
          passengers: bookingData.passengers as PassengersDetail,
-         pickUp: bookingData.pickUp as Location,
-         destination: bookingData.destination ? bookingData.destination as Location : null,
-         startDateTime: bookingData.start_date_time,
+         pickUp: bookingData.pickup as Location,
+         destination: bookingData.dropoff ? bookingData.dropoff as Location : null,
+         startDateTime: bookingData.pickupDateTime,
          endDateTime: bookingData.end_date_time ? bookingData.end_date_time : null,
-         hours: bookingData.hours ? bookingData.hours : null,
+         hours: bookingData.bookingHours ? bookingData.bookingHours : null,
          user: booking.users ? transformUser(booking.users) as UserType : null,
          supplier: booking.supplier,
          status: booking.status as BookingStatus,
+         price: bookingData.price as BookingPrice,
          total: booking.total as any,
          currency: booking.currency as Currency,
          voucher: booking.voucher,

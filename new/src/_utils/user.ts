@@ -16,3 +16,15 @@ export async function getAllUsers (req: Request) {
       return { status: false, data: err }
    }
 }
+
+export function isValidUniqueEmail(email: string): boolean {
+
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   const isValidFormat = emailRegex.test(email)
+
+   if (!isValidFormat) {
+      return false
+   }
+
+   return true
+} 

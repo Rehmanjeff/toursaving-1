@@ -8,6 +8,7 @@ import useSignOut from '@/_utils/signout'
 import useFileDownload from "@/hooks/useFileDownload"
 import ConfirmModal from '@/app/admin/_widgets/ConfirmModal'
 import Notification from '@/app/admin/_widgets/Notification'
+import { useNotification } from '@/app/admin/_hooks/useNotification'
 
 export default function BookingtDetails ({params} : {params: { number: number }}) {
 
@@ -17,10 +18,14 @@ export default function BookingtDetails ({params} : {params: { number: number }}
    const signOut = useSignOut()
    const { downloadLink } = useFileDownload()
    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
-   const [notificationMessage, setNotificationMessage] = useState<string>('')
-   const [notificationDescription, setNotificationDescription] = useState<string>('')
-   const [notificationType, setNotificationType] = useState<'success' | 'error' | null>(null)
-   const [showNotification, setShowNotification] = useState<boolean>(false)
+   const {
+      notificationMessage,
+      notificationDescription,
+      notificationType,
+      showNotification,
+      showNotificationHandler,
+      hideNotificationHandler,
+   } = useNotification()
    
    const handleDownloadClick = (file: string) => {
       downloadLink({
@@ -33,16 +38,10 @@ export default function BookingtDetails ({params} : {params: { number: number }}
 
       if (response.statusCode == 200) {
          handleCloseConfirmModal()
-         setNotificationType('success')
-         setNotificationMessage('Successful')
-         setNotificationDescription('Bookings has been cancelled successfully')
-         setShowNotification(true)
+         showNotificationHandler('Successful', 'Bookings has been cancelled successfully', 'success')
          await fetchData()
       } else {
-         setNotificationType('error')
-         setNotificationMessage('Error')
-         setNotificationDescription(response.data)
-         setShowNotification(true)
+         showNotificationHandler('Error', response.data, 'error')
       }
    }
 
@@ -175,8 +174,8 @@ export default function BookingtDetails ({params} : {params: { number: number }}
                   {booking?.passengers.list.map((passenger: any, index: number) => (<div key={index} className="mt-6 flex w-full flex items-center gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                      <div className="text-sm font-medium leading-6 text-gray-900">Name: </div>
                      <div className="text-sm text-gray-500 capitalize">{passenger.name}</div>
-                     <div className="text-sm text-gray-500 capitalize">{passenger.email}</div>
-                     <div className="text-sm text-gray-500 capitalize">{passenger.phoneNumber.countryCode}-{passenger.phoneNumber.number}</div>
+                     {passenger.email && <div className="text-sm text-gray-500 capitalize">{passenger.email}</div>}
+                     {passenger.phonneNumber && <div className="text-sm text-gray-500 capitalize">{passenger.phoneNumber.countryCode}-{passenger.phoneNumber.number}</div>}
                   </div>))}
                </dl>
             </div>
@@ -260,6 +259,7 @@ export default function BookingtDetails ({params} : {params: { number: number }}
             message={notificationMessage}
             description={notificationDescription}
             type={notificationType}
+            onClose={hideNotificationHandler}
          />
       </div>
    )
