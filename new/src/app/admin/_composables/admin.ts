@@ -116,6 +116,31 @@ const Admin = () => {
       }
    }
    
+   const adminReadUser = async (id: string) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/users/read/${id}`, {
+            method: 'GET',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
    const adminCancelBooking = async (number: number) => {
       try {
          
@@ -141,10 +166,86 @@ const Admin = () => {
       }
    }
    
+   const adminChangeUserStatus = async (id: string) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/users/change-status/${id}`, {
+            method: 'PATCH',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: null}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
    const adminSearchLocation = async (keyword: string) => {
       try {
          
          const response = await fetch(`${baseUrl}/location-search/${keyword}`, {
+            method: 'GET',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+
+   const adminUpdatePageContent = async (page: string, content: string) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/cms/${page}`, {
+            method: 'PATCH',
+            headers: getHeaders(),
+            body: JSON.stringify({ newContent: content })
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: null}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
+   const adminGetPageContent = async (page: string) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/cms/${page}`, {
             method: 'GET',
             headers: getHeaders()
          })
@@ -249,7 +350,11 @@ const Admin = () => {
       adminSearchLocation,
       adminAllUsers,
       adminLogin,
-      adminCreateBooking
+      adminCreateBooking,
+      adminReadUser,
+      adminChangeUserStatus,
+      adminGetPageContent,
+      adminUpdatePageContent
    }
 }
 

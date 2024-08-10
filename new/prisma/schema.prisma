@@ -26,6 +26,15 @@ model bookings {
   payments       payments?
 }
 
+model content {
+  id       Int      @id @default(autoincrement())
+  home     String
+  about    String
+  contact  String
+  privacy  String
+  terms    String
+}
+
 model payments {
   id               Int      @id @default(autoincrement())
   booking_number   String   @unique
@@ -63,6 +72,7 @@ model users {
   last_name    String
   gender       Int
   email        String     @unique
+  status       Boolean    @default(true)
   password     String
   phone_number String
   created_at   DateTime   @default(now()) @db.Timestamptz(6)

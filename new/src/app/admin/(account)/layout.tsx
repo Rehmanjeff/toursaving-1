@@ -60,18 +60,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           { name: 'Add Manual Booking', href: '/admin/bookings/add' }
         ],
       },
-      { name: 'Manage Users', icon: UsersIcon, href: '#', current: false },
+      { name: 'Manage Users', icon: UsersIcon, href: '/admin/users/all', current: false },
       { name: 'Manage Locations', icon: MapPinIcon, href: '#', current: false },
       {
         name: 'CMS',
         icon: DocumentTextIcon,
         current: false,
         children: [
-            { name: 'Home page', href: '#' },
-            { name: 'About Us', href: '#' },
-            { name: 'Contact Us', href: '#' },
-            { name: 'Privacy Policy', href: '#' },
-            { name: 'Terms and Conditions', href: '#' },
+            { name: 'Home page', href: '/admin/cms/home' },
+            { name: 'About Us', href: '/admin/cms/about' },
+            { name: 'Contact Us', href: '/admin/cms/contact' },
+            { name: 'Privacy Policy', href: '/admin/cms/privacy' },
+            { name: 'Terms and Conditions', href: '/admin/cms/terms' },
         ],
       },
       { name: 'Manage Vendors', icon: UserGroupIcon, href: '#', current: false }

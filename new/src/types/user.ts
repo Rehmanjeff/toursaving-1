@@ -1,3 +1,5 @@
+import { BookingType } from "./booking";
+
 export interface UserType {
    id: number;
    firstName: string;
@@ -5,6 +7,8 @@ export interface UserType {
    fullName: string;
    email: string;
    phone: string;
-   gender: 'male' | 'female'
+   status: boolean;
+   gender: 'male' | 'female';
+   bookings?: BookingType[];
    dateTime: string;
 }
