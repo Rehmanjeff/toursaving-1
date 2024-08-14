@@ -15,7 +15,15 @@ export interface CarSummary {
    description: string;
    capacity: number;
    image: string;
-   price: number;
+}
+
+export interface InternalCar {
+   id: number;
+   title: string;
+   description: string;
+   capacity: number;
+   image: string;
+   dateTime: string;
 }
 
 export interface BookingExtra {

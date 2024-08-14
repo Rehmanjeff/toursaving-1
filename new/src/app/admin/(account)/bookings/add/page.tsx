@@ -74,6 +74,8 @@ export default function AdminAddBooking() {
    const [cusPhone, setCusPhone] = useState<string>('')
    const [cusPhoneError, setCusPhoneError] = useState<string>('')
    const [cusGender, setCusGender] = useState<'male' | 'female'>('male')
+   const [bookingTotal, setBookingTotal] = useState<number>(0)
+   const [bookingTotalError, setBookingTotalError] = useState<string>('')
 
    const handleBookingTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -267,6 +269,7 @@ export default function AdminAddBooking() {
          setCusPhoneError('')
          setSelectedCarError('')
          setPassengersError('')
+         setBookingTotalError('')
    
          let hasError = false
    
@@ -290,6 +293,11 @@ export default function AdminAddBooking() {
             hasError = true
          }
          
+         if (bookingTotal <= 0) {
+            setBookingTotalError('Required')
+            hasError = true
+         }
+         
          if (!selectedCar) {
             setSelectedCarError('No car selected')
             hasError = true
@@ -309,7 +317,7 @@ export default function AdminAddBooking() {
          
          if (!hasError) {
    
-            const price : BookingPrice = bookingPriceCalculator(selectedCar as CarSummary, [])
+            const price : BookingPrice = bookingPriceCalculator(bookingTotal, [])
             const customerr = {
                firstName: cusFirstN,
                lastName: cusLastN,
@@ -517,6 +525,18 @@ export default function AdminAddBooking() {
                            <input defaultChecked={bookingType === 'rental'} id="booking-rental" name="booking-type" type="radio" value="rental" onChange={handleBookingTypeChange} className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                            <label htmlFor="booking-rental" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Rental</label>
                         </div>
+                     </div>
+                  </div>
+
+                  <div className="col-span-full">
+                     <label htmlFor="phone-number" className="block text-sm font-medium leading-6 text-gray-900">
+                        Booking total (without commission)
+                     </label>
+                     <div className="mt-2 sm:flex flex-col">
+                        <input id="booking-total" type="number" value={bookingTotal} onChange={(e) => setBookingTotal(parseInt(e.target.value))} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"/>
+                        {bookingTotal <= 0 && (
+                           <div className="text-theme-red text-sm font-semibold">{bookingTotalError}</div>
+                        )}
                      </div>
                   </div>
                   

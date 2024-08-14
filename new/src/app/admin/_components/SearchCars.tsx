@@ -7,21 +7,16 @@ import { Location } from '@/types/location'
 export default function SearchCars({ onSelect, bookingType, bookingHours, pickupLocation, pickupDateTime, dropoffLocation }:{onSelect: any, bookingType: DriveType, bookingHours: null | number, pickupLocation: Location | null, pickupDateTime: string, dropoffLocation: Location | null}) {
 
    const [cars, setCars] = useState<CarSummary[]>([
-      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', price: 120, 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
-      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', price: 340,supplier:'iway', 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
-      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', price: 670, 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
-      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', price: 400, 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
-      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', supplier:'iway', price: 900, 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
-      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', price: 790, 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
-      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', price: 100, 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
-      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', supplier:'iway', price: 600, 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
-      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', price: 450, 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
+      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
+      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', supplier:'iway', 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
+      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
+      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
+      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', supplier:'iway', 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
+      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
+      {title: 'BMW 5 Series Range', description: 'This car is a equipped with many features', supplier:'iway', 'image': 'https://www.bmw.ie/content/dam/bmw/common/all-models/5-series/sedan/2023/5-series-sedan-silver.png', capacity: 3},
+      {title: 'Tesla Cybertruck', description: 'The Tesla Cybertruck is a battery electric pickup truck built by Tesla', supplier:'iway', 'image': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cybertruck-fremont-cropped.jpg', capacity: 5},
+      {title: 'Mercedes Benz S-Class', description: 'Explore the special offers on the current Mercedes-Benz', supplier:'iway', 'image': 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my24/e-class/sedan/all-vehicles/2024-E350-4M-SEDAN-AVP-DR.png', capacity: 7},
    ])
-
-   const getCarTotal = (car: CarSummary) => {
-      const commission = car.price * parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
-      return car.price + commission 
-   }
 
    return (
       <div className="flex fixed top-12 min-h-[200px] max-h-[600px] overflow-y-auto flex-col gap-6 p-6 bg-white pb-8 rounded-3xl w-[90%] mx-auto md:min-w-[400px] md:w-[60%] shadow-custom-symetric-2">
@@ -42,7 +37,6 @@ export default function SearchCars({ onSelect, bookingType, bookingHours, pickup
                            </span>
                         </dd>
                      </dl>
-                     <div>${getCarTotal(car)}</div>
                   </div>
                </li>
                ))}

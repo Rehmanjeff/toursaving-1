@@ -4,11 +4,6 @@ import { CarSummary } from '@/types/booking'
 
 export default function SelectedCar({ car }:{car: CarSummary}) {
 
-   const getCarTotal = () => {
-      const commission = car.price * parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
-      return car.price + commission 
-   }
-
    return (
       <div className="flex fixed top-12 min-h-[200px] max-h-[600px] overflow-y-auto flex-col gap-6 p-6 bg-white pb-8 rounded-3xl w-[90%] mx-auto md:min-w-[400px] md:w-[60%] shadow-custom-symetric-2">
          <div className="">
@@ -25,7 +20,6 @@ export default function SelectedCar({ car }:{car: CarSummary}) {
                            </span>
                         </dd>
                      </dl>
-                     <div>${getCarTotal()}</div>
                   </div>
                </li>
             </ul>

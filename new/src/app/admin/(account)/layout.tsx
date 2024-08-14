@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
    const navigation = [
       { name: 'Dashboard', icon: HomeIcon, href: '#', current: true },
       {
-        name: 'Manage Bookings',
+        name: 'Bookings',
         icon: CalendarDaysIcon,
         current: false,
         children: [
@@ -61,6 +61,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         ],
       },
       { name: 'Manage Users', icon: UsersIcon, href: '/admin/users/all', current: false },
+      {
+         name: 'Cars',
+         icon: CalendarDaysIcon,
+         current: false,
+         children: [
+           { name: 'All cars', href: '/admin/cars/all' },
+           { name: 'Add Car', href: '/admin/cars/add' }
+         ],
+       },
       { name: 'Manage Locations', icon: MapPinIcon, href: '#', current: false },
       {
         name: 'CMS',

@@ -59,61 +59,67 @@ export default function AllBookings() {
          {error && (
             <div className="text-red-600 font-normal mt-12">Bookings could not be fetched at the moment</div>
          )}
-         {bookings?.length && (
-            <div className="mt-8 flow-root">
-               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                     <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-                     <table className="min-w-full divide-y divide-gray-300">
-                        <thead className="bg-gray-50">
+         <div className="mt-8 flow-root">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-300">
+                     <thead className="bg-gray-50">
+                        <tr>
+                           <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                              Booking Number
+                           </th>
+                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Booked By
+                           </th>
+                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Supplier
+                           </th>
+                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Price
+                           </th>
+                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Date and Time
+                           </th>
+                           <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                              Status
+                           </th>
+                           <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                              <span className="sr-only">Edit</span>
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody className="divide-y divide-gray-200 bg-white">
+                        {bookings?.length == 0 && (
                            <tr>
-                              <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                 Booking Number
-                              </th>
-                              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                 Booked By
-                              </th>
-                              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                 Supplier
-                              </th>
-                              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                 Price
-                              </th>
-                              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                 Date and Time
-                              </th>
-                              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                 Status
-                              </th>
-                              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                 <span className="sr-only">Edit</span>
-                              </th>
-                           </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white">
-                           {bookings.map((booking: BookingSummaryType) => (
-                           <tr key={booking.number}>
                               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                 {booking.number}
-                              </td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.user?.firstName} {booking.user?.lastName}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.supplier}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.total} {booking.currency}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.dateTime}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.status}</td>
-                              <td className="relative flex gap-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                 <Link href={booking.number} className="text-indigo-600 hover:text-indigo-900">Details</Link>
-                                 <button onClick={() => handleDownloadClick(`/pdf/${booking.voucher}`)} className="text-indigo-600 hover:text-indigo-900">Voucher</button>
+                                 No bookings found
                               </td>
                            </tr>
-                           ))}
-                        </tbody>
-                     </table>
-                     </div>
+                        )}
+
+                        {bookings?.map((booking: BookingSummaryType) => (
+                        <tr key={booking.number}>
+                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {booking.number}
+                           </td>
+                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.user?.firstName} {booking.user?.lastName}</td>
+                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.supplier}</td>
+                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.total} {booking.currency}</td>
+                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.dateTime}</td>
+                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{booking.status}</td>
+                           <td className="relative flex gap-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                              <Link href={booking.number} className="text-indigo-600 hover:text-indigo-900">Details</Link>
+                              <button onClick={() => handleDownloadClick(`/pdf/${booking.voucher}`)} className="text-indigo-600 hover:text-indigo-900">Voucher</button>
+                           </td>
+                        </tr>
+                        ))}
+                     </tbody>
+                  </table>
                   </div>
                </div>
             </div>
-         )}
+         </div>
       </div>
    )
 }

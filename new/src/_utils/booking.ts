@@ -65,12 +65,12 @@ export const generateRandomNumber = (digits: number): number => {
    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export const bookingPriceCalculator = (car: CarSummary, extras: BookingExtra[]) : BookingPrice => {
+export const bookingPriceCalculator = (totalPrice: number, extras: BookingExtra[]) : BookingPrice => {
    const commissionPercent = parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
-   const carPrice = car.price
+   const carPrice = totalPrice
    const commission = {
       percentage: commissionPercent,
-      amount: carPrice * commissionPercent
+      amount: totalPrice * commissionPercent
    }
 
    const price : BookingPrice = {
