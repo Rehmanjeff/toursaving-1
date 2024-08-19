@@ -69,7 +69,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
            { name: 'All cars', href: '/admin/cars/all' },
            { name: 'Add Car', href: '/admin/cars/add' }
          ],
-       },
+      },
       { name: 'Manage Locations', icon: MapPinIcon, href: '#', current: false },
       {
         name: 'CMS',
@@ -83,7 +83,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             { name: 'Terms and Conditions', href: '/admin/cms/terms' },
         ],
       },
-      { name: 'Manage Vendors', icon: UserGroupIcon, href: '#', current: false }
+      {
+         name: 'Suppliers',
+         icon: CalendarDaysIcon,
+         current: false,
+         children: [
+           { name: 'All suppliers', href: '/admin/suppliers/all' },
+           { name: 'Add supplier', href: '/admin/suppliers/add' }
+         ],
+      },
    ]
 
    const userNavigation = [

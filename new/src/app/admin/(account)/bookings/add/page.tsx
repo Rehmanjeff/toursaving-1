@@ -317,7 +317,7 @@ export default function AdminAddBooking() {
          
          if (!hasError) {
    
-            const price : BookingPrice = bookingPriceCalculator(bookingTotal, [])
+            const price : BookingPrice = bookingPriceCalculator(bookingTotal, true, [])
             const customerr = {
                firstName: cusFirstN,
                lastName: cusLastN,
@@ -338,7 +338,8 @@ export default function AdminAddBooking() {
                pickupLocation as Location, 
                dropoffLocation, 
                pickupDateTime,
-               passengers
+               passengers,
+               true
             )
 
             setIsLoading(false)

@@ -65,23 +65,35 @@ export const generateRandomNumber = (digits: number): number => {
    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export const bookingPriceCalculator = (totalPrice: number, extras: BookingExtra[]) : BookingPrice => {
+export const bookingPriceCalculator = (totalPrice: number, isManual: boolean, extras: BookingExtra[]) : BookingPrice => {
    const commissionPercent = parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
    const carPrice = totalPrice
-   const commission = {
-      percentage: commissionPercent,
-      amount: totalPrice * commissionPercent
+   let  commission
+   let grandTotal = 0
+
+   if (isManual) {
+      commission = {
+         percentage: commissionPercent,
+         amount: totalPrice * (commissionPercent/100)
+      }
+      grandTotal = totalPrice
+   } else {
+      commission = {
+         percentage: commissionPercent,
+         amount: totalPrice * (commissionPercent/100)
+      }
+      grandTotal = totalPrice + commission.amount
    }
 
    const price : BookingPrice = {
-      subTotal: carPrice,
+      subTotal: grandTotal - commission.amount,
       commission: commission,
       tax: 0,
       extras: {
          total: 0,
          list: extras
       },
-      grandTotal: carPrice + commission.amount
+      grandTotal: grandTotal
    }
 
    return price
@@ -104,7 +116,8 @@ async function postBooking(
    pickup: Location,
    dropoff: Location,
    pickupDateTime: string,
-   passengers: PassengersDetail
+   passengers: PassengersDetail,
+   isManual: boolean,
 ) {
 
    let userId: number | null = null
@@ -173,6 +186,7 @@ async function postBooking(
             drive_type: bookingType,
             lang: 'en',
             status: bookingStatus,
+            is_manual: isManual
          },
       })
    
@@ -193,7 +207,8 @@ export async function createBooking (
    pickup: Location,
    dropoff: Location,
    pickupDateTime: string,
-   passengers: PassengersDetail
+   passengers: PassengersDetail,
+   isManual: boolean
 ) {
 
    const preBookingResponse = await preBooking(price, paymentMode)
@@ -218,7 +233,8 @@ export async function createBooking (
       pickup,
       dropoff,
       pickupDateTime,
-      passengers
+      passengers,
+      isManual
    )
    
    if (!postBookingResponse.success) {

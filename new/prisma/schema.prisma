@@ -7,6 +7,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model master_locations {
+  id                   Int      @id @default(autoincrement())
+  location_name        String
+  location_name_arabic String
+  country_name         String
+  location_id          String
+  created_at           DateTime @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime @default(now()) @db.Timestamptz(6)
+
+  supplier_locations   supplier_locations[]
+}
+
+model suppliers {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  commission         Int
+  has_mapping_manual Boolean  @default(false)
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @db.Timestamptz(6)
+
+  supplier_locations supplier_locations[]
+}
+
+model supplier_locations {
+  id                   Int             @id @default(autoincrement())
+  supplier_id          Int
+  master_location_id   Int?
+  location_name        String
+  location_name_arabic String
+  country_name         String
+  location_id          String
+  created_at           DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime        @default(now()) @db.Timestamptz(6)
+
+  supplier             suppliers       @relation(fields: [supplier_id], references: [id])
+  master_location      master_locations? @relation(fields: [master_location_id], references: [id])
+}
+
 model bookings {
   id             Int       @id @default(autoincrement())
   user_id        Int?

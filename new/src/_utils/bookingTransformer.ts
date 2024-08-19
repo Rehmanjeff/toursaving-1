@@ -47,6 +47,7 @@ export function transformBooking(booking: bookings & { users?: users }): any {
          lang: booking.lang,
          notes: bookingData.notes ? bookingData.notes : null,
          canCancel: true,
+         isManual: booking.is_manual,
          dateTime: format(new Date(booking.created_at), 'dd/MM/yyyy hh:mm a')
       }
    } catch (error: any) {

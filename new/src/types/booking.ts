@@ -10,6 +10,7 @@ export type BookingStatus = 'Created' | 'Unpaid' | 'Completed' | 'Cancelled'
 export type Supplier = 'iway'
 
 export interface CarSummary {
+   id?:number;
    title: string;
    supplier: Supplier;
    description: string;
@@ -83,6 +84,7 @@ export interface BookingType {
    lang: string;
    notes: string | null;
    canCancel: boolean;
+   isManual: boolean;
    dateTime:string;
 }
 

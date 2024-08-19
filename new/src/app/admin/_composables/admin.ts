@@ -116,6 +116,31 @@ const Admin = () => {
       }
    }
    
+   const adminAllSuppliers = async () => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/all`, {
+            method: 'GET',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
    const adminReadBooking = async (number: number) => {
       try {
          
@@ -145,6 +170,31 @@ const Admin = () => {
       try {
          
          const response = await fetch(`${baseUrl}/cars/read/${number}`, {
+            method: 'GET',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
+   const adminReadSupplier = async (number: number) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/read/${number}`, {
             method: 'GET',
             headers: getHeaders()
          })
@@ -220,6 +270,56 @@ const Admin = () => {
       try {
          
          const response = await fetch(`${baseUrl}/cars/delete/${number}`, {
+            method: 'DELETE',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: null}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
+   const adminDeleteSupplierLocation = async (number: number) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/locations/delete/${number}`, {
+            method: 'DELETE',
+            headers: getHeaders()
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: null}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
+   const adminDeleteSupplier = async (number: number) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/delete/${number}`, {
             method: 'DELETE',
             headers: getHeaders()
          })
@@ -378,7 +478,8 @@ const Admin = () => {
       pickup: Location, 
       dropoff: Location | null, 
       pickupDateTime: string,
-      passengers: PassengersDetail
+      passengers: PassengersDetail,
+      isManual: boolean
    ) => {
       try {
          
@@ -396,7 +497,8 @@ const Admin = () => {
                pickup,
                dropoff,
                pickupDateTime,
-               passengers
+               passengers,
+               isManual
             })
          })
 
@@ -452,6 +554,78 @@ const Admin = () => {
          return {statusCode: 500, data: err}
       }
    }
+   
+   const adminAddSupplier = async (
+      name: string, 
+      commission: number, 
+      hasMappingManual: boolean
+   ) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/create`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({
+               name,
+               commission,
+               hasMappingManual
+            })
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
+   
+   const adminAddSupplierLocation = async (
+      supplierId: string,
+      name: string, 
+      arabicName: string, 
+      countryName: string,
+      locationId: string
+   ) => {
+      try {
+         
+         const response = await fetch(`${baseUrl}/suppliers/locations/create`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({
+               supplierId,
+               name,
+               arabicName,
+               countryName,
+               locationId
+            })
+         })
+
+         const data = await response.json()
+
+         if (data.error && data.error.code == 'ERR_JWT_EXPIRED') {
+            throw new CustomError(data.error.code, 401)
+         }
+         
+         return {statusCode: response.status, data: data}
+      } catch (err : any) {
+         
+         if (err instanceof CustomError) {
+            return { statusCode: err.statusCode, data: err.message }
+         }
+
+         return {statusCode: 500, data: err}
+      }
+   }
 
    return {
       adminDashboard,
@@ -469,7 +643,13 @@ const Admin = () => {
       adminAddCar,
       adminReadCar,
       adminAllCars,
-      adminDeleteCar
+      adminDeleteCar,
+      adminAllSuppliers,
+      adminAddSupplier,
+      adminReadSupplier,
+      adminDeleteSupplier,
+      adminAddSupplierLocation,
+      adminDeleteSupplierLocation
    }
 }
 

@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
       pickup,
       dropoff,
       pickupDateTime,
-      passengers
+      passengers,
+      isManual
    } = body
 
    const { status, data } = await createBooking(
@@ -30,7 +31,8 @@ export async function POST(request: NextRequest) {
       pickup,
       dropoff,
       pickupDateTime,
-      passengers
+      passengers,
+      isManual
    )
 
    const transform = transformBooking(data as any)

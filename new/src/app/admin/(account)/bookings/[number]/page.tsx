@@ -102,7 +102,7 @@ export default function BookingtDetails ({params} : {params: { number: number }}
                   </div>
                   <div className="mt-6 flex w-full flex items-center gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                   <div className="text-sm font-medium leading-6 text-gray-900">Supplier: </div>
-                  <div className="text-sm text-gray-500">{booking?.supplier}</div>
+                  <div className="text-sm text-gray-500">{booking?.isManual ? 'Manual' : booking?.supplier}</div>
                   </div>
                   <div className="mt-6 flex w-full flex items-center gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                   <div className="text-sm font-medium leading-6 text-gray-900">Notes: </div>
