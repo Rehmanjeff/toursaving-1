@@ -65,19 +65,20 @@ export const generateRandomNumber = (digits: number): number => {
    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export const bookingPriceCalculator = (totalPrice: number, isManual: boolean, extras: BookingExtra[]) : BookingPrice => {
-   const commissionPercent = parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
-   const carPrice = totalPrice
+export const bookingPriceCalculator = (totalPrice: number, supplier: 'manual' | number, extras: BookingExtra[]) : BookingPrice => {
+   
+   let commissionPercent = parseInt(process.env.NEXT_PUBLIC_BOOKING_COMMISSION as string)
    let  commission
    let grandTotal = 0
 
-   if (isManual) {
+   if (supplier == 'manual') {
       commission = {
          percentage: commissionPercent,
          amount: totalPrice * (commissionPercent/100)
       }
       grandTotal = totalPrice
    } else {
+      // todo: update commissionPercent to commission of the given supplier from db 
       commission = {
          percentage: commissionPercent,
          amount: totalPrice * (commissionPercent/100)

@@ -1,3 +1,15 @@
+import { MasterLocation } from "./location"
+
+
+export interface SupplierLocation {
+   id: number;
+   name: string;
+   nameArabic: string;
+   countryName: string;
+   locationId: string;
+   dateTime: string;
+   mappedMasterLocation?:MasterLocation
+}
 
 export interface Supplier {
    id: number;
@@ -5,12 +17,5 @@ export interface Supplier {
    commission: number;
    hasMappingManual: boolean;
    dateTime:string;
-   locations: {
-      id: number;
-      locationName: string;
-      locationNameArabic: string;
-      countryName: string;
-      locationId: string;
-      dateTime: string;
-   }[];
+   locations: SupplierLocation[];
 }

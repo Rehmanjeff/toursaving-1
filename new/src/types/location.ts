@@ -7,3 +7,12 @@ export interface Location {
    desc?: string;
    isAirport?: boolean
 }
+
+export interface MasterLocation {
+   id: number;
+   name: string;
+   nameArabic: string;
+   countryName: string;
+   locationId: string;
+   dateTime: string;
+}

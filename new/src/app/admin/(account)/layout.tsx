@@ -38,15 +38,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
    const [sidebarOpen, setSidebarOpen] = useState(false)
    const user = useSelector((state: RootState) => state.user)
-   const authAdminToken = localStorage.getItem(process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY as string) || null
+   const [authAdminToken, setAuthAdminToken] = useState<string | null>(null)
    const router = useRouter()
    const signOut = useSignOut()
 
    useEffect(() => {
-      if (!authAdminToken || authAdminToken == '') {
-         router.push(ADMIN_LOGIN)
-         return
+
+      if (typeof window !== 'undefined') {
+         const token = localStorage.getItem(process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY as string) || null
+         setAuthAdminToken(token)
+   
+         if (!token || token == '') {
+            router.push(ADMIN_LOGIN)
+            return
+         }
       }
+
    }, [])
    
    const navigation = [
@@ -70,7 +77,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
            { name: 'Add Car', href: '/admin/cars/add' }
          ],
       },
-      { name: 'Manage Locations', icon: MapPinIcon, href: '#', current: false },
+      { name: 'Master Locations', icon: MapPinIcon, href: '/admin/locations/all', current: false },
       {
         name: 'CMS',
         icon: DocumentTextIcon,

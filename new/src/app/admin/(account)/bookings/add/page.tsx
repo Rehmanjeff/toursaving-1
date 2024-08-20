@@ -317,7 +317,7 @@ export default function AdminAddBooking() {
          
          if (!hasError) {
    
-            const price : BookingPrice = bookingPriceCalculator(bookingTotal, true, [])
+            const price : BookingPrice = bookingPriceCalculator(bookingTotal, 'manual', [])
             const customerr = {
                firstName: cusFirstN,
                lastName: cusLastN,

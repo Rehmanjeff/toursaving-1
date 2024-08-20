@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { transformSupplier } from '@/_utils/supplierTransformer'
+import { transformSupplier, transformSupplierLocation } from '@/_utils/supplierTransformer'
 import { Supplier } from '@/types/supplier'
 
 const prisma = new PrismaClient()
@@ -24,12 +24,43 @@ export async function readSupplier (id: string) {
       
       const supplier = await prisma.suppliers.findUnique({
          where: { id: parseInt(id) },
-         include: { supplier_locations: true }
+         include: { 
+            supplier_locations: {
+               include: {master_location: true},
+               orderBy: {
+                  created_at: 'desc',
+               },
+            } 
+         }
       })
       
       const transformedData: Supplier = transformSupplier(supplier as any)
 
       return { status: true, data: transformedData }
+   } catch (err) {
+      return { status: false, data: err }
+   }
+}
+
+export async function readSupplierLocation (id: string) {
+
+   try {
+      
+      const supplierLocation = await prisma.supplier_locations.findUnique({
+         where: { id: parseInt(id) },
+         include: {
+            supplier: true,
+         },
+      })
+
+      const supplier = await prisma.suppliers.findUnique({
+         where: { id: supplierLocation?.supplier_id }
+      })
+      
+      const transformedLocationData = transformSupplierLocation(supplierLocation as any)
+      const transformedSupplierData = transformSupplier(supplier as any)
+
+      return { status: true, data: {location: transformedLocationData, supplier: transformedSupplierData} }
    } catch (err) {
       return { status: false, data: err }
    }
@@ -42,6 +73,25 @@ export async function deleteSupplier (id: string) {
       await prisma.suppliers.delete({
          where: { id: parseInt(id) },
       })
+
+      return { status: true }
+   } catch (err) {
+      return { status: false, data: err }
+   }
+}
+
+export async function mapLocation (from: 'supplier' | 'master', fromId: string, toId: string) {
+
+   try {
+
+      if (from == 'supplier') {
+         await prisma.supplier_locations.update({
+            where: { id: parseInt(fromId) },
+            data: { master_location_id: parseInt(toId) },
+         })
+      } else if (from == 'master') {
+
+      }
 
       return { status: true }
    } catch (err) {

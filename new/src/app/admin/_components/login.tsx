@@ -68,8 +68,12 @@ export default function LoginPage() {
          store.dispatch(setUser(userData))
          const authKey = process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY as string
          const authUserKey = process.env.NEXT_PUBLIC_AUTH_USER_KEY as string
-         localStorage.setItem(authKey, response.data.token)
-         localStorage.setItem(authUserKey, JSON.stringify(userData))
+
+         if (typeof window !== 'undefined') {
+            localStorage.setItem(authKey, response.data.token)
+            localStorage.setItem(authUserKey, JSON.stringify(userData))
+         }
+         
          router.push(ADMIN_DASHBOARD)
       } else {
          console.log(response.data)

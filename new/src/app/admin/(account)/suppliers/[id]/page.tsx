@@ -139,11 +139,13 @@ export default function AdminSupplierDetails ({params} : {params: { id: number }
                            {location.name}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{location.countryName}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"></td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                           {location.mappedMasterLocation ? `${location.mappedMasterLocation.name} - ${location.mappedMasterLocation.countryName}` : ''}
+                        </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{location.dateTime}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                            <div className="flex w-full gap-2">
-                              <Link href={location.locationId} className="text-indigo-600 hover:text-indigo-900">Mapping</Link>
+                              <Link href={`/admin/locations/mapping/supplier/${location.id}`} className="text-indigo-600 hover:text-indigo-900">Mapping</Link>
                               <button onClick={() => openConfirmModal(location.id)} className="text-red-600 hover:text-red-900">Delete</button>
                            </div>
                         </td>
