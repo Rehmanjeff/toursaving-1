@@ -120,7 +120,7 @@ export default function AdminAddSupplier() {
                         This supplier has manual locations
                      </label>
                      <div className="mt-2">
-                        <select onChange={(e: any) => setHasMappingManual(e.target.value == 'yes' ? true : false)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-sm sm:leading-6">
+                        <select value={hasMappingManual ? 'yes' : 'no'} onChange={(e: any) => setHasMappingManual(e.target.value == 'yes' ? true : false)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none sm:text-sm sm:leading-6">
                            <option value="yes">Yes</option>
                            <option value="no">No</option>
                         </select>
